@@ -26,6 +26,9 @@ from kmip.pie import exceptions
 from kmip.pie import factory
 from kmip.pie import objects as pobjects
 
+from kmip.core.attributes import Name
+from kmip.core.enums import NameType
+
 from kmip.services.kmip_client import KMIPProxy
 
 
@@ -257,6 +260,15 @@ class ProxyKmipClient(api.KmipClient):
                 managed_object.cryptographic_usage_masks)
 
             attributes.append(mask_attribute)
+
+        if hasattr(managed_object, 'name'):
+            name_obj = Name.create(managed_object.name,
+                NameType.UNINTERPRETED_TEXT_STRING)
+            name_attr = self.attribute_factory.create_attribute(
+                enums.AttributeType.NAME,
+                name_obj)
+
+            attributes.append(name_attr)
 
         template = cobjects.TemplateAttribute(attributes=attributes)
         object_type = managed_object.object_type

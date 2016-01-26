@@ -787,7 +787,7 @@ class SecretData(CryptographicObject):
 
         self.value = value
         self.data_type = data_type
-        self.names = [name]
+        self.name = name
 
         if masks:
             self.cryptographic_usage_masks = masks
